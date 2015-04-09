@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename package &apos;dev.peabody505.BeaconArcade&apos; to &apos;dev.peabody505.BeaconSG&apos;&#x0D;&#x0A;- Original project: &apos;BeaconSG&apos;&#x0D;&#x0A;- Original element: &apos;BeaconSG/src/dev.peabody505.BeaconArcade&apos;&#x0D;&#x0A;- Renamed element: &apos;BeaconSG/src/dev.peabody505.BeaconSG&apos;&#x0D;&#x0A;- Update references to refactored element&#x0D;&#x0A;- Update textual occurrences in comments and strings" description="Rename package &apos;dev.peabody505.BeaconArcade&apos;" flags="589830" hierarchical="false" id="org.eclipse.jdt.ui.rename.package" input="/src&lt;dev.peabody505.BeaconArcade" name="dev.peabody505.BeaconSG" qualified="false" references="true" stamp="1424004770559" textual="false" version="1.0"/>
+</session>

@@ -1,0 +1,147 @@
+package dev.peabody505.BeaconSnowfight;
+
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.Sound;
+import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitRunnable;
+
+import com.connorlinfoot.titleapi.TitleAPI;
+
+public class PowerUpHandler {
+	@SuppressWarnings("deprecation")
+	public static void powerSpawn() {
+		int ran = Main.randInt(1, 5);
+		if (Main.currentCollect.contains("false")) {
+			Location lastDrop = new Location(Bukkit.getWorld(Main.getPlugin()
+					.getConfig().getString("p" + ran + ".world")), 0, 0, 0);
+			lastDrop.setX(Main.lastPower.get("x"));
+			lastDrop.setY(Main.lastPower.get("y"));
+			lastDrop.setZ(Main.lastPower.get("z"));
+			lastDrop.getBlock().setType(Material.AIR);
+			Bukkit.dispatchCommand(
+					Bukkit.getServer().getConsoleSender(),
+					"particle explode " + lastDrop.getX() + " "
+							+ lastDrop.getY() + " " + lastDrop.getZ()
+							+ " 0 0 0 1");
+			Bukkit.dispatchCommand(
+					Bukkit.getServer().getConsoleSender(),
+					"particle explode " + lastDrop.getX() + " "
+							+ lastDrop.getY() + " " + lastDrop.getZ()
+							+ " 0 0 0 1");
+			Bukkit.dispatchCommand(
+					Bukkit.getServer().getConsoleSender(),
+					"particle explode " + lastDrop.getX() + " "
+							+ lastDrop.getY() + " " + lastDrop.getZ()
+							+ " 0 0 0 1");
+			Bukkit.dispatchCommand(
+					Bukkit.getServer().getConsoleSender(),
+					"particle explode " + lastDrop.getX() + " "
+							+ lastDrop.getY() + " " + lastDrop.getZ()
+							+ " 0 0 0 1");
+			Bukkit.dispatchCommand(
+					Bukkit.getServer().getConsoleSender(),
+					"particle explode " + lastDrop.getX() + " "
+							+ lastDrop.getY() + " " + lastDrop.getZ()
+							+ " 0 0 0 1");
+			Bukkit.dispatchCommand(
+					Bukkit.getServer().getConsoleSender(),
+					"particle explode " + lastDrop.getX() + " "
+							+ lastDrop.getY() + " " + lastDrop.getZ()
+							+ " 0 0 0 1");
+			for (Player players : Bukkit.getOnlinePlayers()) {
+				players.playSound(lastDrop, Sound.CHICKEN_EGG_POP, 1, 1);
+			}
+			Main.lastPower.clear();
+		}
+
+		Location powerDrop = new Location(Bukkit.getWorld(Main.getPlugin()
+				.getConfig().getString("p" + ran + ".world")), 0, 0, 0);
+		powerDrop
+				.setX(Main.getPlugin().getConfig().getDouble("p" + ran + ".x"));
+		powerDrop
+				.setY(Main.getPlugin().getConfig().getDouble("p" + ran + ".y"));
+		powerDrop
+				.setZ(Main.getPlugin().getConfig().getDouble("p" + ran + ".z"));
+		Main.lastPower.put("x", powerDrop.getX());
+		Main.lastPower.put("y", powerDrop.getY());
+		Main.lastPower.put("z", powerDrop.getZ());
+		Material powerUpBlock = Material.AIR;
+		int ran2 = Main.randInt(1, 3);
+		if (ran2 == 1) {
+			powerUpBlock = Material.GLASS;
+		}
+		if (ran2 == 2) {
+			powerUpBlock = Material.STONE;
+		}
+		if (ran2 == 3) {
+			powerUpBlock = Material.DIAMOND_BLOCK;
+		}
+		Bukkit.dispatchCommand(
+				Bukkit.getServer().getConsoleSender(),
+				"particle hugeexplosion " + powerDrop.getX() + " "
+						+ powerDrop.getY() + " " + powerDrop.getZ()
+						+ " 0 0 0 1");
+		powerDrop.getBlock().setType(powerUpBlock);
+		for (Player players : Bukkit.getOnlinePlayers()) {
+			TitleAPI.sendTitle(players, 10, 20, 10, "§eA powerup just spawned!");
+			players.playSound(powerDrop, Sound.BLAZE_HIT, 10, 1);
+			players.playSound(powerDrop, Sound.FIZZ, 10, 1);
+			players.playSound(powerDrop, Sound.AMBIENCE_THUNDER, 10, 1);
+		}
+		Main.currentCollect.clear();
+		Main.currentCollect.add("false");
+
+		new BukkitRunnable() {
+			public void run() {
+				powerSpawn();
+			}
+		}.runTaskLater(Main.getPlugin(), 100l);
+	}
+
+	//powerup actions - called from listener
+	@SuppressWarnings("deprecation")
+	public static void powerInvisibility(final Player player) {
+		for (Player players : Bukkit.getOnlinePlayers()) {
+			players.hidePlayer(player);
+		}
+		
+		new BukkitRunnable() {
+			public void run() {
+				for (Player players : Bukkit.getOnlinePlayers()) {
+					players.showPlayer(player);
+					Main.powerUpMap.remove(player.getName());
+				}
+			}
+		}.runTaskLater(Main.getPlugin(), 100l);
+	}
+	
+	public static void powerSpeed(final Player player) {
+		PotionEffect speed = new PotionEffect(PotionEffectType.SPEED, 200, 1);
+		player.addPotionEffect(speed, true);
+		new BukkitRunnable() {
+			public void run() {
+				for (Player players : Bukkit.getOnlinePlayers()) {
+					Main.powerUpMap.remove(player.getName());
+				}
+			}
+		}.runTaskLater(Main.getPlugin(), 200l);
+	}
+	
+	public static void powerRicochet(final Player player) {
+		new BukkitRunnable() {
+			public void run() {
+				for (Player players : Bukkit.getOnlinePlayers()) {
+					Main.powerUpMap.remove(player.getName());
+				}
+			}
+		}.runTaskLater(Main.getPlugin(), 200l);
+	}
+	
+	public static void powerClear(Player player) {
+		
+	}
+}

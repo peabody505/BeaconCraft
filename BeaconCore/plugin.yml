@@ -1,0 +1,30 @@
+name: BeaconCore
+author: peabody505
+main: dev.peabody505.BeaconCore.Main
+description: Core plugin for all BeaconCraft servers.
+version: 0.5
+
+commands:
+    setspawn:
+        description: Sets the spawn location.
+        usage: /setspawn
+    spawn:
+        description: Warps you to spawn.
+        usage: /spawn
+
+    pm:
+        description: Send private messages to other players.
+        usage: /pm <player> <message>
+    chat:
+        description: Toggles chat settings. (enable/disable)
+        usage: /chat
+    teleporter:
+        description: Returns lost teleporters!
+        usage: /teleporter
+    lobby:
+        description: Sends you to the main server.
+        usage: /lobby, /hub
+    hub:
+        description: Sends you to the main server.
+        usage: /lobby, /hub
+

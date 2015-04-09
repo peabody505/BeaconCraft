@@ -1,0 +1,16 @@
+package com.gmail.filoghost.holograms.api;
+
+import org.bukkit.entity.Player;
+
+@Deprecated
+public abstract interface TouchHandler
+{
+  @Deprecated
+  public abstract void onTouch(Hologram paramHologram, Player paramPlayer);
+}
+
+
+/* Location:           C:\Users\Rufus\Downloads\HolographicDisplays.jar
+ * Qualified Name:     com.gmail.filoghost.holograms.api.TouchHandler
+ * JD-Core Version:    0.7.0.1
+ */

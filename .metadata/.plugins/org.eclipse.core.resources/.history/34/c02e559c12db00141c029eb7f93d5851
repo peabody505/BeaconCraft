@@ -1,0 +1,232 @@
+package dev.peabody505.BeaconCore;
+
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+
+import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.World;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.EntityExplodeEvent;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitScheduler;
+
+public final class Main extends JavaPlugin implements Listener {
+
+	public void onEnable() {
+		BukkitScheduler scheduler = Bukkit.getServer().getScheduler();
+		scheduler.scheduleSyncRepeatingTask(this, new Runnable() {
+			public void run() {
+				// Do something
+			}
+		}, 0L, 20L);
+		Bukkit.getServer().getMessenger()
+				.registerOutgoingPluginChannel(this, "BungeeCord");
+		Bukkit.getServer().getPluginManager().registerEvents(this, this);
+		saveDefaultConfig();
+	}
+
+	public void sendToServer(Player player, String targetserver) {
+		ByteArrayOutputStream b = new ByteArrayOutputStream();
+		DataOutputStream out = new DataOutputStream(b);
+		try {
+			out.writeUTF("Connect");
+			out.writeUTF(targetserver);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		player.sendPluginMessage(this, "BungeeCord", b.toByteArray());
+	}
+
+	ArrayList<String> chatDisable = new ArrayList<String>();
+
+	public boolean onCommand(CommandSender sender, Command cmd, String label,
+			String[] args) {
+		final Player player = (Player) sender;
+		if (cmd.getName().equalsIgnoreCase("chat")) {
+			if (chatDisable.contains(player.getName())) {
+				chatDisable.remove(player.getName());
+				player.sendMessage("§3§lCHAT§r: Chat has been enabled.");
+				return true;
+			} else if (!(chatDisable.contains(player.getName()))) {
+				chatDisable.add(player.getName());
+				player.sendMessage("§3§lCHAT§r: Chat has been disabled.");
+				return true;
+			}
+		} else if (cmd.getName().equalsIgnoreCase("pm")) {
+			if (args.length < 2) {
+				player.sendMessage("§4§lERROR§c: Usage: /pm <target> <message>");
+				return true;
+			} else if (Bukkit.getPlayer(args[0]).getName().equals(null)) {
+				player.sendMessage("§4§lERROR§c: That player is not online!");
+				return true;
+			} else {
+				Player target = Bukkit.getPlayer(args[0]);
+				int i = 1;
+				String message = "";
+				while (i < args.length) {
+					String message1 = message + args[i] + " ";
+					message = message1;
+					i++;
+				}
+
+				target.sendMessage("§2§lFROM §7§l"
+						+ player.getName().toUpperCase() + "§r: " + message);
+				player.sendMessage("§2§lTO §7§l"
+						+ target.getName().toUpperCase() + "§r: " + message);
+				return true;
+			}
+		} else if (cmd.getName().equalsIgnoreCase("teleporter")) {
+			ItemStack compass = new ItemStack(Material.COMPASS, 1);
+			ItemMeta compassmeta = compass.getItemMeta();
+			compassmeta.setDisplayName("§a§lServer Teleporter");
+			compass.setItemMeta(compassmeta);
+			player.getInventory().setItem(0, compass);
+		} else if (cmd.getName().equalsIgnoreCase("hub")
+				|| cmd.getName().equalsIgnoreCase("lobby")) {
+			player.sendMessage("§6§lSERVER§r: Connecting to §aHub§r...");
+			new BukkitRunnable() {
+				public void run() {
+					sendToServer(player, "Hub");
+				}
+			}.runTaskLater(this, 10l);
+		}
+			if (cmd.getLabel().equalsIgnoreCase("setspawn") && (player.isOp())) {
+					this.getConfig().set("spawn.world",
+							player.getWorld().getName());
+					this.getConfig()
+							.set("spawn.x", player.getLocation().getX());
+					this.getConfig()
+							.set("spawn.y", player.getLocation().getY());
+					this.getConfig()
+							.set("spawn.z", player.getLocation().getZ());
+					saveConfig();
+					player.sendMessage("§9§lWARP§r: Spawn set!");
+					return true;
+
+				} else if (cmd.getLabel().equalsIgnoreCase("spawn")) {
+					World world = Bukkit.getWorld(this.getConfig().getString(
+							"spawn.world"));
+					if (world.equals(null)) {
+						player.sendMessage("§4§lERROR§c: Spawn has not been set!");
+					}
+					player.teleport(new Location(world, this.getConfig()
+							.getDouble("spawn.x"), this.getConfig().getDouble(
+							"spawn.y"), this.getConfig().getDouble("spawn.z")));
+					player.sendMessage("§9§lWARP§r: Warped to spawn!");
+					return true;
+				}
+		
+		return true;
+	}
+
+	@EventHandler
+	public void onPlayerCommand(PlayerCommandPreprocessEvent event) {
+		if (event.getMessage().toLowerCase().contains("/tell")
+				|| event.getMessage().toLowerCase().contains("/msg")) {
+			event.getPlayer().sendMessage(
+					"Unknown command. Type \"/help\" for help.");
+			event.setCancelled(true);
+		}
+
+	}
+
+	@EventHandler
+	public void onPlayerChat(AsyncPlayerChatEvent event) {
+		Player player = event.getPlayer();
+		String message = event.getMessage();
+		for (Player players : Bukkit.getOnlinePlayers()) {
+			if (!(chatDisable.contains(players.getName()))) {
+				if (!(player.isOp())) {
+					players.sendMessage("§7" + player.getName() + ": "
+							+ message);
+				} else if (player.isOp()) {
+					players.sendMessage("§b§lSTAFF§8//§r" + player.getName()
+							+ ": " + message.replace("&", "§"));
+				}
+			}
+		}
+		event.setCancelled(true);
+	}
+
+	@EventHandler
+	public void onPlayerJoin(PlayerJoinEvent event) {
+		Player player = event.getPlayer();
+		World world = Bukkit
+				.getWorld(this.getConfig().getString("spawn.world"));
+		Location teleport = new Location(world, this.getConfig().getDouble(
+				"spawn.x"), this.getConfig().getDouble("spawn.y"), this
+				.getConfig().getDouble("spawn.z"));
+			player.teleport(teleport);
+		player.setGameMode(GameMode.ADVENTURE);
+	}
+	
+	@EventHandler
+	public void onPlayerQuit(PlayerQuitEvent event){
+		event.setQuitMessage(null);
+	}
+
+	@EventHandler
+	public void onPlayerRespawn(PlayerRespawnEvent event) {
+		World world = Bukkit
+				.getWorld(this.getConfig().getString("spawn.world"));
+		Location teleport = new Location(world, this.getConfig().getDouble(
+				"spawn.x"), this.getConfig().getDouble("spawn.y"), this
+				.getConfig().getDouble("spawn.z"));
+			event.setRespawnLocation(teleport);
+	}
+
+	@EventHandler
+	public void onBlockBreak(BlockBreakEvent event) {
+		if (this.getConfig().getBoolean("block-events") == false) {
+			if (!(event.getPlayer().isOp())) {
+				event.setCancelled(true);
+			}
+		}
+	}
+	
+	@EventHandler
+	public void onBlockPlace(final BlockPlaceEvent event) {
+		if (event.getBlock().getType().equals(Material.TNT)) {
+			event.getBlock().setType(Material.SNOW_BLOCK);
+			event.getBlock().getLocation().getWorld().createExplosion(event.getBlock().getLocation(), 10F, false);
+			event.getPlayer().setVelocity(event.getPlayer().getLocation().getDirection().setY(0).multiply(-2));
+			new BukkitRunnable() {
+				public void run() {
+					event.getPlayer().getInventory().setItem(8, new ItemStack(Material.TNT, 1));
+					event.getBlock().setType(Material.AIR);
+				}
+			}.runTaskLater(this, 1l);
+		}
+		
+		if (this.getConfig().getBoolean("block-events") == false) {
+			if (!(event.getPlayer().isOp())) {
+				event.setCancelled(true);
+			}
+		}
+	}
+	
+	@EventHandler
+    public void onEntityExplodeEvent(EntityExplodeEvent event) {
+		event.blockList().clear();
+    }
+}

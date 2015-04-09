@@ -1,0 +1,5 @@
+package dev.peabody505.BeaconSG;
+
+public class PlayerDeathListener implements Listener{
+
+}

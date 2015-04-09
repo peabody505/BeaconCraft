@@ -1,0 +1,11 @@
+main: dev.peabody505.BeaconSnowfight.Main
+name: BeaconSnowfight
+author: peabody505
+description: A fun game for fun!
+version: 1.9.3
+
+commands:
+  sfspawn:
+    description: Sets spawns for snowfight.
+  sfpower:
+    description: Sets power up locations for snowfight.

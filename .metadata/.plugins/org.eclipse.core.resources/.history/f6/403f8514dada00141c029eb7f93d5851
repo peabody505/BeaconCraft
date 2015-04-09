@@ -1,0 +1,165 @@
+package dev.peabody505.BeaconSnowfight;
+
+import org.bukkit.Bukkit;
+import org.bukkit.Effect;
+import org.bukkit.GameMode;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.Sound;
+import org.bukkit.block.Chest;
+import org.bukkit.entity.Player;
+import org.bukkit.entity.Snowball;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+
+import com.connorlinfoot.titleapi.TitleAPI;
+
+public class PlayerClickListener implements Listener {
+
+	@SuppressWarnings("deprecation")
+	@EventHandler
+	public void onPlayerClick(final PlayerInteractEvent event) {
+		ItemStack snowshooter = new ItemStack(Material.DIAMOND_HOE, 1);
+		ItemMeta snowshootermeta = snowshooter.getItemMeta();
+		snowshootermeta
+				.setDisplayName("§bSnowshooter §7(Right Click to Spawn)");
+		snowshooter.setItemMeta(snowshootermeta);
+		Player player = event.getPlayer();
+		player.setGameMode(GameMode.ADVENTURE);
+		if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK)
+				|| event.getAction().equals(Action.LEFT_CLICK_BLOCK)
+				|| event.getAction().equals(Action.RIGHT_CLICK_AIR)
+				|| event.getAction().equals(Action.LEFT_CLICK_AIR)) {
+			if (player.getItemInHand().getType().equals(Material.DIAMOND_HOE)) {
+				if (Main.ingame.contains(player.getName())) {
+					player.launchProjectile(Snowball.class);
+				} else {
+					int number = Main.randInt(1, 13);
+					if (number == 13) {
+						Location teleport = new Location(Bukkit.getWorld(Main
+								.getPlugin().getConfig()
+								.getString(number + ".world")), 0, 0, 0);
+						Main.ingame.add(player.getName());
+						teleport.setX(Main.getPlugin().getConfig()
+								.getDouble(number + ".x"));
+						teleport.setY(Main.getPlugin().getConfig()
+								.getDouble(number + ".y"));
+						teleport.setZ(Main.getPlugin().getConfig()
+								.getDouble(number + ".z"));
+						player.teleport(teleport);
+						TitleAPI.sendTitle(player, 0, 20, 10, "derp");
+						player.sendMessage("§a§lSNOWFIGHT§r: You were teleported to spawn number §c§l"
+								+ number + "§r!");
+						player.playSound(player.getLocation(),
+								Sound.ENDERDRAGON_GROWL, 10, 1);
+						snowshootermeta
+								.setDisplayName("§bSnowshooter §7(Right Click to Shoot)");
+						snowshooter.setItemMeta(snowshootermeta);
+						player.getInventory().setItem(0, snowshooter);
+					} else {
+						Location teleport = new Location(Bukkit.getWorld(Main
+								.getPlugin().getConfig()
+								.getString(number + ".world")), 0, 0, 0);
+						Main.ingame.add(player.getName());
+						teleport.setX(Main.getPlugin().getConfig()
+								.getDouble(number + ".x"));
+						teleport.setY(Main.getPlugin().getConfig()
+								.getDouble(number + ".y"));
+						teleport.setZ(Main.getPlugin().getConfig()
+								.getDouble(number + ".z"));
+						player.teleport(teleport);
+						player.sendMessage("§a§lSNOWFIGHT§r: You were teleported to spawn number §a"
+								+ number + "§r!");
+						player.playSound(player.getLocation(),
+								Sound.CHICKEN_EGG_POP, 10, 1);
+						snowshootermeta
+								.setDisplayName("§bSnowshooter §7(Right Click to Shoot)");
+						snowshooter.setItemMeta(snowshootermeta);
+						player.getInventory().setItem(0, snowshooter);
+					}
+				}
+
+			}
+			
+			//invisibility
+			if (event.getClickedBlock().getType().equals(Material.GLASS)) {
+				Location lastDrop = new Location(Bukkit.getWorld(Main
+						.getPlugin().getConfig()
+						.getString("p" + "1" + ".world")), 0, 0, 0);
+				lastDrop.setX(Main.lastPower.get("x"));
+				lastDrop.setY(Main.lastPower.get("y"));
+				lastDrop.setZ(Main.lastPower.get("z"));
+				if (event.getClickedBlock().getLocation().equals(lastDrop)) {
+					event.getClickedBlock().setType(Material.AIR);
+					Main.powerUpMap.put(player.getName(), "invis");
+					PowerUpHandler.powerInvisibility(player);
+					Bukkit.dispatchCommand(
+							Bukkit.getServer().getConsoleSender(),
+							"particle explode " + lastDrop.getX() + " "
+									+ lastDrop.getY() + " " + lastDrop.getZ()
+									+ " 0 0 0 1");
+					Bukkit.dispatchCommand(
+							Bukkit.getServer().getConsoleSender(),
+							"particle explode " + lastDrop.getX() + " "
+									+ lastDrop.getY() + " " + lastDrop.getZ()
+									+ " 0 0 0 1");
+					Bukkit.dispatchCommand(
+							Bukkit.getServer().getConsoleSender(),
+							"particle explode " + lastDrop.getX() + " "
+									+ lastDrop.getY() + " " + lastDrop.getZ()
+									+ " 0 0 0 1");
+					Bukkit.dispatchCommand(
+							Bukkit.getServer().getConsoleSender(),
+							"particle explode " + lastDrop.getX() + " "
+									+ lastDrop.getY() + " " + lastDrop.getZ()
+									+ " 0 0 0 1");
+					Bukkit.dispatchCommand(
+							Bukkit.getServer().getConsoleSender(),
+							"particle explode " + lastDrop.getX() + " "
+									+ lastDrop.getY() + " " + lastDrop.getZ()
+									+ " 0 0 0 1");
+					Bukkit.dispatchCommand(
+							Bukkit.getServer().getConsoleSender(),
+							"particle explode " + lastDrop.getX() + " "
+									+ lastDrop.getY() + " " + lastDrop.getZ()
+									+ " 0 0 0 1");
+					for (Player players : Bukkit.getOnlinePlayers()) {
+						players.playSound(lastDrop, Sound.ANVIL_USE, 3, 1);
+					}
+				}
+			//speed
+			} else if (event.getClickedBlock().getType().equals(Material.STONE)) {
+				Location lastDrop = new Location(Bukkit.getWorld(Main
+						.getPlugin().getConfig()
+						.getString("p" + "1" + ".world")), 0, 0, 0);
+				lastDrop.setX(Main.lastPower.get("x"));
+				lastDrop.setY(Main.lastPower.get("y"));
+				lastDrop.setZ(Main.lastPower.get("z"));
+			//ricochet
+			} else if (event.getClickedBlock().getType()
+					.equals(Material.DIAMOND_BLOCK)) {
+				Location lastDrop = new Location(Bukkit.getWorld(Main
+						.getPlugin().getConfig()
+						.getString("p" + "1" + ".world")), 0, 0, 0);
+				lastDrop.setX(Main.lastPower.get("x"));
+				lastDrop.setY(Main.lastPower.get("y"));
+				lastDrop.setZ(Main.lastPower.get("z"));
+			}
+
+			if (event.getClickedBlock().getType().equals(Material.CHEST)) {
+				Chest chest = (Chest) event.getClickedBlock().getState();
+				chest.getInventory().clear();
+				event.getClickedBlock().setType(Material.AIR);
+				player.playSound(player.getLocation(), Sound.CHICKEN_EGG_POP,
+						10, 1);
+				player.playEffect(event.getClickedBlock().getLocation(),
+						Effect.SMOKE, 100000);
+				player.sendMessage("§a§lSNOWFIGHT§r: Thanks! We're trying to get rid of chests.");
+			}
+		}
+	}
+}

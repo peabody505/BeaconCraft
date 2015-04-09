@@ -1,0 +1,28 @@
+/*  1:   */ package com.gmail.filoghost.holograms.api.replacements;
+/*  2:   */ 
+/*  3:   */ import com.gmail.filoghost.holograms.api.FloatingItem;
+/*  4:   */ import org.bukkit.entity.Player;
+/*  5:   */ 
+/*  6:   */ public class OldPickupHandlerWrapper
+/*  7:   */   implements com.gmail.filoghost.holographicdisplays.api.handler.PickupHandler
+/*  8:   */ {
+/*  9:   */   public com.gmail.filoghost.holograms.api.PickupHandler oldHandler;
+/* 10:   */   private FloatingItem item;
+/* 11:   */   
+/* 12:   */   public OldPickupHandlerWrapper(FloatingItem item, com.gmail.filoghost.holograms.api.PickupHandler oldPickupHandler)
+/* 13:   */   {
+/* 14:14 */     this.item = item;
+/* 15:15 */     this.oldHandler = oldPickupHandler;
+/* 16:   */   }
+/* 17:   */   
+/* 18:   */   public void onPickup(Player player)
+/* 19:   */   {
+/* 20:20 */     this.oldHandler.onPickup(this.item, player);
+/* 21:   */   }
+/* 22:   */ }
+
+
+/* Location:           C:\Users\Rufus\Downloads\HolographicDisplays.jar
+ * Qualified Name:     com.gmail.filoghost.holograms.api.replacements.OldPickupHandlerWrapper
+ * JD-Core Version:    0.7.0.1
+ */

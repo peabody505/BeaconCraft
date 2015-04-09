@@ -1,0 +1,5 @@
+name: BeaconHub
+author: peabody505
+main: dev.peabody505.BeaconHub.Main
+description: Hub plugin for BeaconCraft.
+version: 0.1

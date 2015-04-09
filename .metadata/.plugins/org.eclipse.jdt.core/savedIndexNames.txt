@@ -1,0 +1,6 @@
+INDEX VERSION 1.126+C:\Users\Rufus\Plugins\BeaconCraft\.metadata\.plugins\org.eclipse.jdt.core
+3297411160.index
+1186537560.index
+1804070219.index
+2235632295.index
+196157874.index

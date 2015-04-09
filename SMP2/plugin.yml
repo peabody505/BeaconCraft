@@ -1,0 +1,29 @@
+main: dev.peabody505.SMPWarp.Main
+author: peabody505
+name: EpsilonWarp
+version: 1.0
+
+commands:
+    setspawn:
+        description: Sets the spawn location.
+    
+    spawn:
+        description: Warps you to spawn.
+        
+    setmall:
+        description: Sets the mall location.
+    
+    mall:
+        description: Warps you to the mall.
+        
+    sethome:
+        description: Sets your home.
+    
+    home:
+        description: Warps you home.
+        
+    back:
+        description: Warps you back to where you died.  
+
+    suicide:
+        description: Commit suicide.

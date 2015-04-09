@@ -1,0 +1,129 @@
+/*   1:    */ package com.gmail.filoghost.holograms.api.replacements;
+/*   2:    */ 
+/*   3:    */ import com.gmail.filoghost.holograms.api.FloatingItem;
+/*   4:    */ import com.gmail.filoghost.holograms.api.ItemTouchHandler;
+/*   5:    */ import com.gmail.filoghost.holograms.api.PickupHandler;
+/*   6:    */ import com.gmail.filoghost.holographicdisplays.object.CraftHologram;
+/*   7:    */ import com.gmail.filoghost.holographicdisplays.object.line.CraftItemLine;
+/*   8:    */ import org.bukkit.Location;
+/*   9:    */ import org.bukkit.World;
+/*  10:    */ import org.bukkit.inventory.ItemStack;
+/*  11:    */ 
+/*  12:    */ public class FakeFloatingItem
+/*  13:    */   implements FloatingItem
+/*  14:    */ {
+/*  15:    */   public CraftHologram hologram;
+/*  16:    */   private CraftItemLine mainLine;
+/*  17:    */   
+/*  18:    */   public FakeFloatingItem(CraftHologram hologram, ItemStack item)
+/*  19:    */   {
+/*  20: 22 */     this.hologram = hologram;
+/*  21: 23 */     this.mainLine = hologram.appendItemLine(item);
+/*  22:    */   }
+/*  23:    */   
+/*  24:    */   public boolean update()
+/*  25:    */   {
+/*  26: 28 */     return true;
+/*  27:    */   }
+/*  28:    */   
+/*  29:    */   public void hide() {}
+/*  30:    */   
+/*  31:    */   public void setItemStack(ItemStack itemstack)
+/*  32:    */   {
+/*  33: 38 */     this.mainLine.setItemStack(itemstack);
+/*  34:    */   }
+/*  35:    */   
+/*  36:    */   public ItemStack getItemStack()
+/*  37:    */   {
+/*  38: 43 */     return this.mainLine.getItemStack();
+/*  39:    */   }
+/*  40:    */   
+/*  41:    */   public Location getLocation()
+/*  42:    */   {
+/*  43: 48 */     return this.hologram.getLocation();
+/*  44:    */   }
+/*  45:    */   
+/*  46:    */   public double getX()
+/*  47:    */   {
+/*  48: 53 */     return this.hologram.getX();
+/*  49:    */   }
+/*  50:    */   
+/*  51:    */   public double getY()
+/*  52:    */   {
+/*  53: 58 */     return this.hologram.getY();
+/*  54:    */   }
+/*  55:    */   
+/*  56:    */   public double getZ()
+/*  57:    */   {
+/*  58: 63 */     return this.hologram.getZ();
+/*  59:    */   }
+/*  60:    */   
+/*  61:    */   public World getWorld()
+/*  62:    */   {
+/*  63: 68 */     return this.hologram.getWorld();
+/*  64:    */   }
+/*  65:    */   
+/*  66:    */   public void teleport(Location location)
+/*  67:    */   {
+/*  68: 73 */     this.hologram.teleport(location);
+/*  69:    */   }
+/*  70:    */   
+/*  71:    */   public void setTouchHandler(ItemTouchHandler handler)
+/*  72:    */   {
+/*  73: 78 */     if (handler != null) {
+/*  74: 79 */       this.mainLine.setTouchHandler(new OldItemTouchHandlerWrapper(this, handler));
+/*  75:    */     } else {
+/*  76: 81 */       this.mainLine.setTouchHandler(null);
+/*  77:    */     }
+/*  78:    */   }
+/*  79:    */   
+/*  80:    */   public ItemTouchHandler getTouchHandler()
+/*  81:    */   {
+/*  82: 87 */     return ((OldItemTouchHandlerWrapper)this.mainLine.getTouchHandler()).oldHandler;
+/*  83:    */   }
+/*  84:    */   
+/*  85:    */   public boolean hasTouchHandler()
+/*  86:    */   {
+/*  87: 92 */     return this.mainLine.getTouchHandler() != null;
+/*  88:    */   }
+/*  89:    */   
+/*  90:    */   public void setPickupHandler(PickupHandler handler)
+/*  91:    */   {
+/*  92: 97 */     if (handler != null) {
+/*  93: 98 */       this.mainLine.setPickupHandler(new OldPickupHandlerWrapper(this, handler));
+/*  94:    */     } else {
+/*  95:100 */       this.mainLine.setPickupHandler(null);
+/*  96:    */     }
+/*  97:    */   }
+/*  98:    */   
+/*  99:    */   public PickupHandler getPickupHandler()
+/* 100:    */   {
+/* 101:106 */     return ((OldPickupHandlerWrapper)this.mainLine.getPickupHandler()).oldHandler;
+/* 102:    */   }
+/* 103:    */   
+/* 104:    */   public boolean hasPickupHandler()
+/* 105:    */   {
+/* 106:111 */     return this.mainLine.getPickupHandler() != null;
+/* 107:    */   }
+/* 108:    */   
+/* 109:    */   public long getCreationTimestamp()
+/* 110:    */   {
+/* 111:116 */     return this.hologram.getCreationTimestamp();
+/* 112:    */   }
+/* 113:    */   
+/* 114:    */   public void delete()
+/* 115:    */   {
+/* 116:121 */     this.hologram.delete();
+/* 117:    */   }
+/* 118:    */   
+/* 119:    */   public boolean isDeleted()
+/* 120:    */   {
+/* 121:126 */     return this.hologram.isDeleted();
+/* 122:    */   }
+/* 123:    */ }
+
+
+/* Location:           C:\Users\Rufus\Downloads\HolographicDisplays.jar
+ * Qualified Name:     com.gmail.filoghost.holograms.api.replacements.FakeFloatingItem
+ * JD-Core Version:    0.7.0.1
+ */

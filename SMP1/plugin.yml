@@ -1,0 +1,8 @@
+name: EpsilonSMP
+main: dev.peabody505.SMP.Main
+author: peabody505
+version: 1.0.0
+commands:
+    setrank:
+        description: Sets the rank of players.
+        

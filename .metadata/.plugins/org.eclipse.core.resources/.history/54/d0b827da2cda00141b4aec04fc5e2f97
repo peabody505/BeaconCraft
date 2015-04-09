@@ -1,0 +1,28 @@
+/*  1:   */ package com.gmail.filoghost.holograms.api.replacements;
+/*  2:   */ 
+/*  3:   */ import com.gmail.filoghost.holographicdisplays.object.CraftHologram;
+/*  4:   */ import org.bukkit.entity.Player;
+/*  5:   */ 
+/*  6:   */ public class OldTouchHandlerWrapper
+/*  7:   */   implements com.gmail.filoghost.holographicdisplays.api.handler.TouchHandler
+/*  8:   */ {
+/*  9:   */   public com.gmail.filoghost.holograms.api.TouchHandler oldHandler;
+/* 10:   */   private CraftHologram hologram;
+/* 11:   */   
+/* 12:   */   public OldTouchHandlerWrapper(CraftHologram hologram, com.gmail.filoghost.holograms.api.TouchHandler oldHandler)
+/* 13:   */   {
+/* 14:14 */     this.hologram = hologram;
+/* 15:15 */     this.oldHandler = oldHandler;
+/* 16:   */   }
+/* 17:   */   
+/* 18:   */   public void onTouch(Player player)
+/* 19:   */   {
+/* 20:20 */     this.oldHandler.onTouch(this.hologram, player);
+/* 21:   */   }
+/* 22:   */ }
+
+
+/* Location:           C:\Users\Rufus\Downloads\HolographicDisplays.jar
+ * Qualified Name:     com.gmail.filoghost.holograms.api.replacements.OldTouchHandlerWrapper
+ * JD-Core Version:    0.7.0.1
+ */

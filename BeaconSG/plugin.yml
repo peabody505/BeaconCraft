@@ -1,0 +1,9 @@
+name: BeaconSG
+main: dev.peabody505.BeaconSG.Main
+author: peabody505
+version: 0.1
+descripton: SpeedyGames for BeaconCraft.
+
+commands:
+    sg:
+        descripton: Base command for SpeedyGames.
