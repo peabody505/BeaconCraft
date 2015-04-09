@@ -7,8 +7,6 @@ import dev.peabody505.BeaconSG.Main;
 
 public class BlockListener implements Listener{
 	public void onBlockBreak(BlockBreakEvent event) {
-		if (Main.getPlugin().getConfig().contains("block")) {
-			
-		}
+		
 	}
 }
