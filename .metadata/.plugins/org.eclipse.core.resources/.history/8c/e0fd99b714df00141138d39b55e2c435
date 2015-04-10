@@ -1,0 +1,16 @@
+package handlers;
+
+import java.io.File;
+
+import org.bukkit.configuration.file.FileConfiguration;
+
+import dev.peabody505.BeaconSG.Main;
+
+public class ConfigHandler {
+	private FileConfiguration allowedBlocks = null;
+	private File allowedBlocksFile = null;
+	
+	public void allowedBlocksReload() {
+		allowedBlocksFile = new File(Main.getPlugin().getDataFolder(), "allowedBlocks.yml");
+	}
+}

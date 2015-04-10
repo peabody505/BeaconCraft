@@ -1,0 +1,22 @@
+package handlers;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
+import org.bukkit.Material;
+
+public class ConfigHandler {
+    private static void findBlock(String fileName, Material block) {
+        try {
+          File file = new File(fileName);
+          Scanner scanner = new Scanner(file);
+          while (scanner.hasNextLine()) {
+            System.out.println(scanner.nextLine());
+          }
+          scanner.close();
+        } catch (FileNotFoundException e) {
+          e.printStackTrace();
+        }
+      }
+}

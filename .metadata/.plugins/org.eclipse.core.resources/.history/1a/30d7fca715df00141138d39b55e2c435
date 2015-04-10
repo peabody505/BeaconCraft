@@ -1,0 +1,25 @@
+package handlers;
+
+import java.io.File;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.UnsupportedEncodingException;
+
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
+
+import dev.peabody505.BeaconSG.Main;
+
+public class ConfigHandler {
+	private FileConfiguration allowedBlocks = null;
+	private File allowedBlocksFile = null;
+	
+	public void allowedBlocksReload() throws UnsupportedEncodingException {
+	    if (allowedBlocksFile == null) {
+		allowedBlocksFile = new File(Main.getPlugin().getDataFolder(), "allowedBlocks.yml");
+	    }
+		allowedBlocks = YamlConfiguration.loadConfiguration(allowedBlocksFile);
+		
+		Reader defConfigStream = new InputStreamReader(Main.getPlugin().getResource("allowedBlocks.yml"), "UTF8");
+	}
+}

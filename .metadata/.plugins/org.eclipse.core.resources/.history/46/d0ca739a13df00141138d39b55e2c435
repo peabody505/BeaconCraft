@@ -1,0 +1,7 @@
+package handlers;
+
+import org.bukkit.configuration.file.FileConfiguration;
+
+public class ConfigHandler {
+	private FileConfiguration allowedBlocks = null;
+}
