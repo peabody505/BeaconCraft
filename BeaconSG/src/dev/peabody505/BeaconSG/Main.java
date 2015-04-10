@@ -10,6 +10,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public final class Main extends JavaPlugin {
 	private static Plugin plugin;
+	
+	//test comment
 
 	public static void registerEvents(org.bukkit.plugin.Plugin plugin,
 			Listener... listeners) {

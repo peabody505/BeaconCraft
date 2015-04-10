@@ -3,6 +3,6 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="C:/Users/Rufus/Desktop/Development/Spigot Backups/spigot1658.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Rufus/Desktop/Development/Dev Server/HoloAPI-v1.2.3.jar"/>
+	<classpathentry kind="lib" path="/Users/Rufus/GitHub/BeaconCraft/spigot1658.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
